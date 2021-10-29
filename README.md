@@ -80,6 +80,9 @@ output: {
 	),
 }
 ```
+You can copy the default config file with:
+
+    cp /usr/share/doc/pavis/pavis.conf.default ~/.config/pavis/pavis.conf
 
 ### Setting up algorithms
 
