@@ -1,0 +1,33 @@
+input: {
+ #   Your pulse audio input device
+ #   Get your default output sink with $ pactl get-default-sink
+ #   and append ".monitor" to use in this setting.
+ #   You can also ue a recording sink.
+ #   Leave this empty to use the default sink.
+     input_device_name: "alsa_output.pci-0000_0e_00.1.analog-stereo.monitor",
+  }
+
+output: {
+   # The timeout specifies how often packets are sent to the WLED devices (in microseconds)
+   packet_timeout: 50000,
+   wled_devices: (
+       {
+           # Name of the device used to control it
+           name: "Desk",
+           # Number of the leds passed on to the algorithm. Currently only a maximun number of 170 are supported
+           leds: 104,
+           # IP address of the device
+           ip: "192.168.2.100",
+           # Port, default is 5568
+           port: 5568,
+       },
+       # Second example device
+       {
+           name: "Couch",
+           leds: 50,
+           ip: "192.168.2.101",
+           port: 5568,
+       }
+
+   ),
+}

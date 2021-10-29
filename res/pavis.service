@@ -1,0 +1,9 @@
+[Unit]
+Description=Pavis daemon, audio visualization for pulseaudio and WLED devices
+
+[Service]
+ExecStart=/usr/bin/pavis-daemon
+Restart=always
+
+[Install]
+WantedBy=default.target
