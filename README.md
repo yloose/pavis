@@ -80,14 +80,22 @@ output: {
 	),
 }
 ```
+
+### Setting up algorithms
+
+Algorithms are stored in `/home/${USER}/.config/pavis/algorithms`.
+You can copy some examples ones and helper scripts to compile them by issuing the following commands:
+
+    mkdir -p ~/.config/pavis/algorithms && cd ~/.config/pavis
+	cp /usr/share/doc/pavis/algorithms/* ./algorithms
+	cp /usr/share/doc/pavis/compile_algorithms.sh ./
+
+To compile your algorithms, either for the first time or after editing them, you can simply call the script: ``bash compile_algorithms.sh``
+
 ### Controlling the daemon
 
 Pavis listens on a socket at `/tmp/pavis.sock` and as such can be controlled with any program that can write to it.
 Here are some examples to manipulate devices with socat:
-
-Rescan for new algorithms:
-    
-	echo ':rescan' | socat - /tmp/pavis.sock
 
 Pause or resume a client by its name as specified in the config file:
 
@@ -97,20 +105,21 @@ Pause or resume a client by its name as specified in the config file:
 Select a new algorithm for a device by its file name:
 
     echo ':select <algorithm_name> <device_name>' | socat - /tmp/pavis.sock
+ 
+Rescan for new algorithms:
+    
+	echo ':rescan' | socat - /tmp/pavis.sock 
+
+When running pavis for the first time or after adding a new device you need to select a algorithm and use the ``:resume`` command to start streaming to the device.
 
 A more simple cli tool is planned in the future.
 
-### Setting up algorithms
+### Running and logging
 
-Algorithms are stored in `/home/${USER}/.config/pavis/algorithms`.
-You can copy some examples ones and helper scripts to compile them by issuing the following commands:
+You can run pavis by typing ``pavis-daemon``, or you can start it (on login) via systemd with:
 
-    cd ~/.config/pavis
-	cp /usr/share/doc/pavis/algorithms/* ./algorithms
-	cp /usr/share/doc/pavis/compile_algorithms.sh ./
-
-To compile your algorithms, either for the first time or after editing them, you can simply call the script: ``bash compile_algorithms.sh``
-
+    sudo systemctl start pavis-daemon
+	sudo systemctl enable pavis-daemon
 
 ## Developing and compiling new algorithms
 
