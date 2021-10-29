@@ -43,7 +43,6 @@ void modify_entry_in_state_file(char *display_name, int new_status, char *new_al
 			if (strcmp(display_name_mod, display_name) == 0) {
 				if (new_status < 0)
 					new_e131_state.status = input.status;
-				printf("\nTEST: %s\n\n", input.algorithm_name);
 				if (new_algorithm_name == NULL)
 					strcpy(new_e131_state.algorithm_name, input.algorithm_name);
 				goto found;
@@ -62,10 +61,6 @@ void modify_entry_in_state_file(char *display_name, int new_status, char *new_al
 	}
 
 	found:
-	printf("\n\n");
-	printf("%s\n", new_e131_state.algorithm_name);
-	printf("%s", new_algorithm_name);
-	printf("\n\n");
 	fseek(state_file, index * sizeof(e131_state_t), SEEK_SET);
 	fwrite(&new_e131_state, sizeof(e131_state_t), 1, state_file);
 	fclose(state_file);

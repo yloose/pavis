@@ -80,7 +80,6 @@ void start_recording_loop() {
 	uint8_t buf[BUFSIZE];
 	/* Record some data ... */
 	if (pa_simple_read(s, buf, sizeof(buf), &error) < 0) {
-	  fprintf(stderr, __FILE__": pa_simple_read() failed: %s\n", pa_strerror(error));
 	  syslog(LOG_ERR, "Could not read from PulseAudio stream: %s", pa_strerror(error));
 	  goto finish;
 	}

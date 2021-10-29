@@ -30,7 +30,6 @@ void handle_request(int rc, char buf[]) {
 	  char *algorithm_name = strtok(arguments, " ");
 	  char *device_name = strtok(NULL, " ");
 
-	  printf("\n\nAlgorithm name: %s\nDevice name: %s\n\n", algorithm_name, device_name);
 	  e131_thread_change_algorithm(device_name, algorithm_name);
 
   } else if (strncmp(buf, ":pause", 6) == 0) {

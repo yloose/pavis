@@ -137,10 +137,7 @@ void e131_thread_change_algorithm(char *display_name, char new_algorithm_name[])
 		if (change_algorithm(new_algorithm_name, thread) != 0)
 			return;
 		modify_algorithm_in_state_file(display_name, new_algorithm_name);
-		if (thread->status == 0)
-
-			printf("\n\n\nAlgorithm function: %p\n\n\n",
-					thread->algorithm_func);
+		syslog(LOG_INFO, "Changing algorithm of %s to %s.", display_name, new_algorithm_name);
 
 	} else {
 		syslog(LOG_ERR, "Could not change algorithm. Device name not found.");

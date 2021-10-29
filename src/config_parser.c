@@ -33,13 +33,9 @@ void init_config() {
 	config_init(&cfg);
 
 	if(!config_read_file(&cfg, config_file)) {
-		// syslog(LOG_ERR, stderr, "%s:%d - %s\n", config_error_file(&cfg), config_error_line(&cfg), config_error_text(&cfg));
-
-		fprintf(stderr, "%s:%d - %s\n", config_error_file(&cfg),
-		            config_error_line(&cfg), config_error_text(&cfg));
+		syslog(LOG_ERR, "Config file error: %s:%d - %s\n", config_error_file(&cfg), config_error_line(&cfg), config_error_text(&cfg));
 
 	    config_destroy(&cfg);
-		syslog(LOG_ERR, "Config file not accessible, exiting.");
 	    exit(-1);
 	}
 
