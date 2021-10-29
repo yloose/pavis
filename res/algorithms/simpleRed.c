@@ -28,8 +28,8 @@ uint8_t* calc() {
 	uint8_t first_half[leds_on * 3];
 
 	for (size_t i = 0; i < leds_on; i++) {
-		first_half[i * 3] = 35; // BLUE
-		first_half[i * 3 + 1] = 19; // RED
+		first_half[i * 3] = 0; // BLUE
+		first_half[i * 3 + 1] = 255; // RED
 		first_half[i * 3 + 2] = 0; // GREEN
 	}
 
