@@ -121,6 +121,8 @@ You can run pavis by typing ``pavis-daemon``, or you can start it (on login) via
     sudo systemctl start pavis-daemon
 	sudo systemctl enable pavis-daemon
 
+Pavis logs to the syslog daemon by default, see how you can access the syslog depending on your distribution.
+
 ## Developing and compiling new algorithms
 
 Algorithms are stored in `/home/${USER}/.config/pavis/algorithms`. They are compiled as shared libraries for pavis to load at runtime.
