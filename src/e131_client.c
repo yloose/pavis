@@ -96,8 +96,8 @@ double* e131_start_thread() {
 	double *data = malloc(sizeof(double) * 513);
 	memcpy(data, &temp, 513);
 
-	for (size_t i = 0; i < 1; i++) {
-	// for (size_t i = 0; i < user_config->output.wled_devices_count; i++) {
+	for (size_t i = 0; i < user_config->output.wled_devices_count; i++) {
+
 		arguments[i] = calloc(1, sizeof(e131_args_t));
 
 		arguments[i]->data = data;
