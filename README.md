@@ -22,11 +22,11 @@ And for building and compiling:
 
 Install on ubuntu with:
 
-    # apt install libfftw3-dev libconfig-dev libpulse-dev cmake build-essential git
+    sudo apt install libfftw3-dev libconfig-dev libpulse-dev cmake build-essential git
 
 Install on arch based distros with:
 
-    # pacman -S fftw libconfig libpulse base-devel git
+    sudo pacman -S fftw libconfig libpulse base-devel git
 
 ### Download & Build
 
