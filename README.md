@@ -1,6 +1,6 @@
 # Pavis
 
-Pavis can cast your local pulseaudio stream to a [WLED](https://github.com/Aircoookie/WLED) device in the network using fourier transformation. You can create you own algorithms which are linked and used dynamically to translate the audio to light data.
+Pavis can cast your local pulseaudio stream to a [WLED](https://github.com/Aircoookie/WLED) device in the network using fourier transformation. You can create your own algorithms which are linked and used dynamically to translate the audio to light data.
 
 
 ## Installation
