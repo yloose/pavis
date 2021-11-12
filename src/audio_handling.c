@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <syslog.h>
+#include <string.h>
 #include <pulse/simple.h>
 #include <pulse/error.h>
 #include <math.h>
@@ -37,6 +38,32 @@ void read_buffer(uint8_t *buffer, size_t size, double *e131_data, double *input_
 
 }
 
+int get_default_audio_sink(char *default_sink) {
+
+  FILE *fp;
+  char path[1035];
+
+  /* Open the command for reading. */
+  fp = popen("pacmd list-sinks | awk '/* index/, /name/' | grep name | sed 's/.$//' | sed 's/\\s*name: <//' | sed 's/$/.monitor/'", "r");
+  if (fp == NULL) {
+	return 0;
+  }
+
+
+  // Read output
+  fgets(default_sink, 200, fp);
+
+  // Remove trailing newline
+  default_sink[strcspn(default_sink, "\n")] = 0;
+
+  /* close */
+  pclose(fp);
+
+  return 1;
+
+}
+
+
 void start_recording_loop() {
 
   // Temporary
@@ -58,19 +85,63 @@ void start_recording_loop() {
   pa_simple *s = NULL;
   int error;
 
+  // TODO: Sanitize the following if-else chain
   /* Create the recording stream */
-  if ( user_config->input.input_device_name[0] ==  '\0' ) {
-	if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, NULL, "Pulseaudio LED FFT record", &ss, NULL, NULL, &error))) {
-	  syslog(LOG_ERR, "Could not initialize PulseAudio stream with default sink: %s", pa_strerror(error));
-	  goto finish;
+  if ( user_config->input.input_device_name[0] == '\0' ) {
+	syslog(LOG_WARNING, "Not pulseaudio device specified using the default devices monitor.");
+
+	char default_sink[200];
+	if (!(get_default_audio_sink(default_sink))) {
+
+	  syslog(LOG_WARNING, "Could not get default audio sink with pacmd, using the default audio sink from pulseaudio.");
+
+	  if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, default_sink, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		syslog(LOG_ERR, "Could not initialize Pulseaudio stream with default sink.");
+		goto finish;
+	  }
+
+	} else {
+
+	  if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, default_sink, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		syslog(LOG_WARNING, "Could not initialize Pulseaudio stream with default sink from pacmd: %s", default_sink);
+
+		if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, NULL, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		  syslog(LOG_ERR, "Could not initialize Pulseaudio stream with default sink.");
+		  goto finish;
+		}
+	  }	  
+
 	}	
   } else {
-	if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, user_config->input.input_device_name, "Pulseaudio LED FFT record", &ss, NULL, NULL, &error))) {
-	  syslog(LOG_ERR, "Could not initialize PulseAudio stream given sink name: %s", pa_strerror(error));
-	  goto finish;
-	}	
+
+	if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, user_config->input.input_device_name, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+	  syslog(LOG_WARNING, "Could not initialize Pulseaudio stream with sink given in config file: %s. Using the default device.", user_config->input.input_device_name);
+	}
+
+	char default_sink[200];
+	if (!(get_default_audio_sink(default_sink))) {
+
+	  syslog(LOG_WARNING, "Could not get default audio sink with pacmd, using the default audio sink from pulseaudio.");
+
+	  if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, NULL, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		syslog(LOG_ERR, "Could not initialize Pulseaudio stream with default sink.");
+		goto finish;
+	  }
+
+	} else {
+
+	  if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, default_sink, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		syslog(LOG_WARNING, "Could not initialize Pulseaudio stream with default sink from pacmd: %s", default_sink);
+
+		if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, NULL, "Pavis FFT record", &ss, NULL, NULL, &error))) {
+		  syslog(LOG_ERR, "Could not initialize Pulseaudio stream with default sink.");
+		  goto finish;
+		}
+	  }	  
+	} 
   }
 
+ 
   for (;;) {
 	if (record_loop_status == 1) {
 	  if (s)
