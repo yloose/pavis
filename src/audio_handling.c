@@ -44,7 +44,7 @@ int get_default_audio_sink(char *default_sink) {
   char path[1035];
 
   /* Open the command for reading. */
-  fp = popen("pacmd list-sinks | awk '/* index/, /name/' | grep name | sed 's/.$//' | sed 's/\\s*name: <//' | sed 's/$/.monitor/'", "r");
+  fp = popen("pactl get-default-sink | sed 's/$/.monitor/'", "r");
   if (fp == NULL) {
 	return 0;
   }
