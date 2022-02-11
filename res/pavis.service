@@ -2,7 +2,7 @@
 Description=Pavis daemon, audio visualization for pulseaudio and WLED devices
 
 [Service]
-ExecStart=/usr/bin/pavis-daemon
+ExecStart=/usr/local/bin/pavis-daemon
 Restart=always
 
 [Install]
