@@ -47,12 +47,12 @@ void* e131_thread_entry(void *arguments) {
 		int fft_values_length;
 		unsigned char *calc_values;
 		uint8_t leds;
-		int status;
+		int *status;
 	};
 
 	unsigned char calc_values[513] = { 0 };
 
-	struct algorithm_thread_args_t algorithm_thread_args = { args->data, 513, calc_values, args->leds, args->status };
+	struct algorithm_thread_args_t algorithm_thread_args = { args->data, 513, calc_values, args->leds, &args->status };
 
 	init_thread:
 
@@ -67,7 +67,7 @@ void* e131_thread_entry(void *arguments) {
 		if (algorithm_thread == 0)
 			goto init_thread;
 
-		if (algorithm_thread_args.status == 1) {
+		if (*algorithm_thread_args.status == 1) {
 		  usleep(250000);
 		  continue;
 		}
