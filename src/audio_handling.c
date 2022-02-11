@@ -88,7 +88,7 @@ void start_recording_loop() {
   // TODO: Sanitize the following if-else chain
   /* Create the recording stream */
   if ( user_config->input.input_device_name[0] == '\0' ) {
-	syslog(LOG_WARNING, "Not pulseaudio device specified using the default devices monitor.");
+	syslog(LOG_WARNING, "No pulseaudio device specified, using the default devices monitor.");
 
 	char default_sink[200];
 	if (!(get_default_audio_sink(default_sink))) {
@@ -103,7 +103,7 @@ void start_recording_loop() {
 	} else {
 
 	  if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, default_sink, "Pavis FFT record", &ss, NULL, NULL, &error))) {
-		syslog(LOG_WARNING, "Could not initialize Pulseaudio stream with default sink from pacmd: %s", default_sink);
+		syslog(LOG_WARNING, "Could not initialize Pulseaudio stream with default sink from pactl: %s", default_sink);
 
 		if ( !(s = pa_simple_new(NULL, "pavis", PA_STREAM_RECORD, NULL, "Pavis FFT record", &ss, NULL, NULL, &error))) {
 		  syslog(LOG_ERR, "Could not initialize Pulseaudio stream with default sink.");
