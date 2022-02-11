@@ -67,6 +67,11 @@ void* e131_thread_entry(void *arguments) {
 		if (algorithm_thread == 0)
 			goto init_thread;
 
+		if (algorithm_thread_args_t.status == 1) {
+		  usleep(250000);
+		  continue;
+		}
+
 		for (size_t i = 0; i < 513; i++) {
 			packet.dmp.prop_val[i] = algorithm_thread_args.calc_values[i];
 		}
