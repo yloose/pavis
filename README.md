@@ -121,8 +121,8 @@ A more simple cli tool is planned in the future.
 
 You can run pavis by typing ``pavis-daemon``, or you can start it (on login) via systemd with:
 
-    sudo systemctl start pavis
-	sudo systemctl enable pavis
+    systemctl --user start pavis
+	systemctl --user enable pavis
 
 Pavis logs to the syslog daemon by default, see how you can access the syslog depending on your distribution.
 
